@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="https://seeklogo.com/images/H/hotstar-logo-6A3E165CC3-seeklogo.com.png" type="image/x-icon" />
+    <title>hotstar</title>
+</head>
+
+<style>
+    *{
+        background-color:rgb(19,25,39)
+    }
+    input {
+        width: 200px;
+        height:40px;
+        border: none;  
+         border-bottom: 1px solid black;
+       
+    }
+
+    #container {
+      
+display:grid;
+grid-template-columns:3%  75% 12%;
+grid-gap:20px;
+    }
+     #img1{
+         width:150px;
+      
+         height:75px;
+     }
+    #movies {
+        height: 350px;
+        width: 300px;
+        
+        /* border: solid 1px black; */
+        border-top: none;
+        overflow-y: scroll;
+        
+    }
+    #search_div{
+        display:flex;
+        gap:10px;
+        padding:10px;
+
+
+    }
+    #slideposter{
+        margin-top: 50px;
+     float: left;
+    }
+    img{
+           
+            width: 90%;
+            height: 350px;
+            margin: 1% 10% 3% 10%;
+        }
+        #im1{
+            width:150px;
+            height:50px;
+
+        }
+        button{
+            width:500px;
+            height: 60px;
+            padding:10px;
+            background-color: azure;
+            border-radius: 10px;
+        margin-left: 32%;
+            
+
+        }
+        #moviefull{
+            color:white;
+            width:500px;
+          
+        }
+</style>
+<!-- debounce(displayMovies,3000) -->
+
+<body>
+
+    <div id="container">
+        <img src="https://www.gizbot.com/img/600x40/img/2021/04/hotstar-vip-vs-hotstar-premium-which-one-to-pick2-1618046969.jpg" id="im1" alt="">
+    <div id="slideposter"></div>
+    <div id="main_div">
+      
+    <input oninput="debounce(displayMovies,1000)" type="text" id="query" placeholder="Search..." />
+    <!-- <input  oninput="displayMovies()" type="text" id="query" /> -->
+    <br>
+    <div id="movies"></div>
+    
+   
+
+</div>
+</div>
+<center>
+<div id="wall"></div>
+
+</center>
+
+</body>
+
+</html>
+
+<script>
+    let movie_div = document.getElementById("movies");
+    let api_key = `99d54a98`;
+    let bomb;
+
+    async function SearchMovies() {
+
+        try {
+
+
+            let name = document.getElementById('query').value;
+            let response = await fetch(`https://www.omdbapi.com/?s=${name}&apikey=${api_key}`)
+            let data = await response.json();
+            console.log(data);
+            return data.Search;
+
+        } catch (err) {
+            console.log(err);
+
+        }
+    }
+
+    async function displayMovies() {
+
+        movie_div.innerHTML = null;
+        let movie_data = await SearchMovies();
+        console.log(movie_data)
+
+        if (movie_data === undefined) {
+            return false;
+        }
+        console.log("Movie_data", movie_data);
+        movie_data.forEach(function (movie) {
+          let  div=document.createElement("div");
+          div.id="search_div";
+            let p = document.createElement("p");
+            p.innerText = movie.Title;
+            let img=document.createElement("img");
+            img.id="img1";
+            img.src=movie.Poster;
+
+div.addEventListener("click", function showVedio(res) {
+            // div.onclick = () => {
+            //    // alert("hii")
+            //    function showVedio(res) {
+
+wall.innerHTML = "";
+//  users_array.forEach(function (user) {
+//users_array.push()
+
+
+let div = document.createElement("div");
+  div.id = "moviefull"
+
+let img_p = document.createElement("img");
+img_p.src = movie.Poster;
+let name = document.createElement("h2");
+name.innerText = "Movie Name :-" + movie.Title;
+
+let type = document.createElement("p");
+type.innerText = "Type :-" + movie.Type;
+let year = document.createElement("p")
+year.innerText = "Release :-" + movie.Year;
+
+let idbm = document.createElement("p")
+idbm.innerText = " Idbm Rating :-" + movie.imdbID;
+
+div.append(img_p, name, type, year, idbm);
+wall.append(div);
+
+ //});
+
+        // }
+               
+            })
+
+            div.append(img,p);
+            movie_div.append(div);
+        });
+    }
+
+    function debounce(func, delay) {
+        //func ->  displayMovies()
+        //skping a functions or defuse bombs or skip the api calls 
+        clearTimeout(bomb);
+
+        bomb = setTimeout(function () {
+            func();
+        }, delay);
+
+
+   
+
+    }
+
+
+
+
+
+
+
+    let images =[
+    
+    "https://i.ytimg.com/vi/-vMASSbYf60/maxresdefault.jpg",
+    "https://i.ytimg.com/vi/OP0nou-f0yU/maxresdefault.jpg",
+    "https://img1.hotstarext.com/image/upload/f_auto,t_hcdl/sources/r1/cms/prod/5121/1085121-h-858acf5f4809",
+    "https://i.ytimg.com/vi/1ZTShnS3Uss/maxresdefault.jpg",
+    "https://static-koimoi.akamaized.net/wp-content/new-galleries/2021/11/atrangi-re-trailer-review-out-001.jpg",
+];
+
+let container = document.getElementById("slideposter");
+function startSlideshow(){
+
+
+let c =0;
+
+let interval= setInterval(function(){
+
+    container.innerHTML=null;
+
+    if(c===images.length){
+        c=0;
+    }
+
+    let img = document.createElement("img");
+
+    img.src =images[c];
+
+container.append(img);
+
+
+c+=1;
+
+//console.log(c)
+
+
+
+},2000);
+
+
+
+
+}
+
+startSlideshow();
+
+</script>

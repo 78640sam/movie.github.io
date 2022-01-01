@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>popular movie</title>
+    <style>
+
+      
+        #wall {
+            display: grid;
+            grid-template-columns: repeat(4, 20%);
+            grid-gap: 5%;
+            margin-left: 5%;
+            padding:10px;
+          
+
+        }
+        h1{
+            text-align: center;
+        }
+        img{
+            height:300px;
+            width:400px;
+        }
+       #movie{
+           padding:10px;
+       }
+      
+    </style>
+</head>
+
+<body  onload="getmovie()">
+    <h1>Welcom To movie App</h1>
+   
+    <hr>
+    <div id="wall"></div>
+</body>
+
+</html>
+<script>
+    var wall = document.getElementById("wall");
+    var name = document.getElementById("name");
+
+    function getmovie() {
+      
+        key =` 79cd98ddf3a4dafe0b7fc5bc78723549`;
+        let url = `https://api.themoviedb.org/3/trending/movie/week?api_key=79cd98ddf3a4dafe0b7fc5bc78723549`;
+      
+      
+
+
+        fetch(url)
+            .then(function (response) {
+                return response.json()
+            })
+            .then(function (res) {
+                const Search = res.results;
+                console.log(res);
+                 console.log(Search)
+
+                appendMovie(Search);
+
+            })
+            // console.log(response)
+
+            .catch(function (err) {
+                console.log(err);
+
+
+            });
+        name = "";
+    }
+    function appendMovie(Search) {
+        wall.innerHTML="";
+        Search.forEach(function (user) {
+            //users_array.push()
+
+
+            let div = document.createElement("div");
+            div.id="movie"
+
+            let img_p = document.createElement("img");
+            img_p.src = "https://image.tmdb.org/t/p/w500"+user.backdrop_path;
+            let name = document.createElement("p");
+            name.innerText = "Movie Name :-"+user.original_title;
+            let type = document.createElement("p");
+            type.innerText = "Type :-"+user.media_type;
+            let year = document.createElement("p")
+            year.innerText = "Date :-"+user.release_date;
+
+            let idbm = document.createElement("p")
+            idbm.innerText = " Idbm :-"+user.vote_average;
+
+            div.append(img_p, name, type, year, idbm);
+            wall.append(div);
+
+        })
+
+    }
+
+
+</script>
